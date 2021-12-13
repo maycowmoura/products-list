@@ -21,12 +21,8 @@ $router->mount('/products', function () use ($router) {
     require_once __DIR__ . '/../controllers/products/delete-products.php';
   });
 
-
-
-
-
-  $router->put('/quantity', function () {
-    require_once __DIR__ . '/../controllers/products/update-quantity.php';
+  $router->put('/(\d+)/amount/(\d+)', function ($productId, $amount) {
+    require_once __DIR__ . '/../controllers/products/update-amount.php';
   });
 });
 
