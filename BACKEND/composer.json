@@ -2,6 +2,7 @@
     "require": {
         "guzzlehttp/guzzle": "^7.2",
         "bramus/router": "^1.6",
-        "opis/database": "^4.2"
+        "opis/database": "^4.2",
+        "respect/validation": "^2.2"
     }
 }
