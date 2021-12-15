@@ -13,7 +13,7 @@ $router->mount('/products', function () use ($router) {
     require_once __DIR__ . '/../controllers/products/create-products.php';
   });
 
-  $router->put('/', function () {
+  $router->put('/(\d+)', function ($productId) {
     require_once __DIR__ . '/../controllers/products/update-products.php';
   });
 

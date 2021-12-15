@@ -1,11 +1,17 @@
 <?php
 
+/**
+ * $productId comes from route
+ * 
+ * 
+ */
+
 require_once __DIR__ . '/../../models/db/connection.php';
 
 use Respect\Validation\Validator as v;
 
 try {
-    v::intVal()->positive()->setName('ID')->check(PUT['id']);
+    v::intVal()->positive()->setName('ID')->check($productId);
     v::stringType()->length(3,30)->setName('Nome do produto')->check(PUT['name']);
     v::stringType()->length(3, 30)->setName('Categoria do Produto')->check(PUT['category']);
     v::floatVal()->positive()->setName('Preço')->check(PUT['price']);
@@ -28,7 +34,7 @@ $sql = $pdo->prepare(
 );
 
 $sql->execute([
-  'id' => PUT['id'],
+  'id' => $productId,
   'name' => PUT['name'],
   'category' => PUT['category'],
   'price' => PUT['price'],
