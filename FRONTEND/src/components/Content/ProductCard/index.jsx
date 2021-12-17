@@ -9,7 +9,7 @@ import { BiEdit, BiMinusCircle as Minus, BiPlusCircle as Plus } from 'react-icon
 
 
 
-export default function ProductCard({ productData, index }) {
+export default function ProductCard({ productData }) {
   const { setCurrentEditingProduct, setShowAddProductModal } = useMainContext()
   const [amount, setAmount] = useState(1);
   const amountTimeout = useRef(null);
@@ -45,7 +45,7 @@ export default function ProductCard({ productData, index }) {
 
   
   return (
-    <div className="card p-4" style={{ animationDelay: `${index * 0.15}s` }}>
+    <div className="card p-4">
       <h4>{productData.name}</h4>
 
       <div className="row">
