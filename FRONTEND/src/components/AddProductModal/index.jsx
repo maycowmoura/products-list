@@ -12,7 +12,7 @@ import { MdOutlineMonetizationOn as Price } from 'react-icons/md';
 
 
 export default function AddProductModal() {
-  const { currentEditingProduct: productData, setCurrentEditingProduct, setProducts, showAddProductModal, setShowAddProductModal } = useMainContext();
+  const { currentEditingProduct: productData, setCurrentEditingProduct, setProducts, setShowAddProductModal } = useMainContext();
   const [disableButton, setDisableButton] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,7 +28,7 @@ export default function AddProductModal() {
       document.body.classList.remove('modal-open');
       setCurrentEditingProduct(null);
     }
-  }, [])
+  }, []) // eslint-disable-line
 
   useEffect(() => {
     const isValid = name.trim() !== '' && String(price).trim() !== '' && Number(amount) >= 1 && category.trim() !== ''
@@ -201,7 +201,7 @@ export default function AddProductModal() {
                 className="form-control"
                 placeholder="Quantidade"
                 value={amount}
-                onChange={e => setAmount(e.target.value)}
+                onChange={e => e.target.value < 1 ? setAmount(1) : setAmount(e.target.value)}
               />
 
               <label className="form-label mt-4"><BsTag /> Categorias</label>
