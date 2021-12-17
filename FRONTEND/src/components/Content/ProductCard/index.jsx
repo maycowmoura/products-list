@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import './style.css';
 import api from '../../../api';
 import { formatDistanceToNowStrict, format } from 'date-fns';
 import { BiEdit, BiMinusCircle as Minus, BiPlusCircle as Plus } from 'react-icons/bi';
@@ -20,7 +21,7 @@ export default function ProductCard({ productData }) {
     }, 3000)
   }, [amount]) //eslint-disable-line
 
-  
+
   function formatPrice(rawPrice) {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -28,7 +29,7 @@ export default function ProductCard({ productData }) {
     }).format(rawPrice);
   }
 
-  function editProduct(){
+  function editProduct() {
 
   }
 
@@ -55,7 +56,7 @@ export default function ProductCard({ productData }) {
         }
       </div>
       <BiEdit className="edit" onClick={editProduct} />
-      
+
       <small className="last-update text-muted" title={format(productData.lastEdition, 'dd/MM/yyy HH:mm:ss')}>
         <i>Atualizado há {formatDistanceToNowStrict(productData.lastEdition)}</i>
       </small>
