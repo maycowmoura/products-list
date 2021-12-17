@@ -53,7 +53,7 @@ export default function Content() {
       ) : (
         <div className="row gy-4">
           {products.map((product, i) =>
-            <div className="col-12 col-md-6">
+            <div className="col-12 col-md-6 col-xl-4">
               <ProductCard productData={product} key={product.id} index={i} />
             </div>
           )}
