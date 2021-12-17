@@ -4,6 +4,7 @@ import { useMainContext } from '../../../contexts/MainContext';
 import { formatPrice } from '../../../utils';
 import api from '../../../api';
 import { formatDistanceToNowStrict, format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 import { BiEdit, BiMinusCircle as Minus, BiPlusCircle as Plus } from 'react-icons/bi';
 
 
@@ -66,8 +67,8 @@ export default function ProductCard({ productData, index }) {
       </div>
       <BiEdit className="edit" onClick={editProduct} />
 
-      <small className="last-update text-muted" title={format(productData.last_edition * 1000, 'dd/MM/yyy HH:mm:ss')}>
-        <i>Atualizado há {formatDistanceToNowStrict(productData.last_edition * 1000)}</i>
+      <small className="last-update text-muted" title={'Última atualização em ' + format(productData.last_edition * 1000, 'dd/MM/yyy HH:mm:ss')}>
+        <i>Atualizado há {formatDistanceToNowStrict(productData.last_edition * 1000, { locale: ptBR })}</i>
       </small>
     </div>
   );
