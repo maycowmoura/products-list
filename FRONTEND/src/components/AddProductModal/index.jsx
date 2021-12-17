@@ -164,7 +164,7 @@ export default function AddProductModal() {
   return (
     <>
       <div id="add-product-modal" className="modal show d-block" tabIndex="-1" onClick={hideModal}>
-        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable" onClick={e => e.stopPropagation()}>
+        <div className="modal-dialog modal-dialog-centered" onClick={e => e.stopPropagation()}>
           <div className="modal-content">
 
             <div className="modal-header">
@@ -213,7 +213,7 @@ export default function AddProductModal() {
               <input
                 type="text"
                 list="categories-history"
-                className="form-control"
+                className="form-control text-lowercase"
                 maxLength="30"
                 placeholder="Digite as categorias do produto"
                 value={category}
