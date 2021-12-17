@@ -5,7 +5,7 @@ const MainContext = React.createContext({});
 
 export function MainContextProvider({ children }) {
   const [products, setProducts] = useState([]);
-  const [showAddProductModal, setShowAddProductModal] = useState(true);
+  const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [currentEditingProduct, setCurrentEditingProduct] = useState(null);
 
   return (

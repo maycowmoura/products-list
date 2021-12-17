@@ -1,6 +1,6 @@
 header {
   display: flex;
-  background-color: red;
+  background-color: #d4d4d5;
   padding: 16px;
   justify-content: center;
   align-items: center;
@@ -9,4 +9,9 @@ header {
 header .container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+header .container img {
+  max-width: 100px;
 }
