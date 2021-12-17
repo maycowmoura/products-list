@@ -21,7 +21,7 @@ try {
 $now = time();
 $data = [
   'name' => strtoupper(trim(POST['name'])),
-  'category' => strtoupper(trim(POST['category'])),
+  'category' => strtolower(trim(POST['category'])),
   'price' => POST['price'],
   'amount' => POST['amount'],
   'perishable' => POST['perishable'],
@@ -29,9 +29,9 @@ $data = [
 
 $sql = $pdo->prepare(
   "INSERT INTO products 
-  (`name`, `category`,`price`, `amount`, `perishable`, `created_at`)
+  (`name`, `category`,`price`, `amount`, `perishable`, `created_at`, `last_edition`)
   VALUES
-  (:name, :category, :price, :amount,  :perishable, {$now})"
+  (:name, :category, :price, :amount,  :perishable, {$now}, {$now})"
 );
 
 $sql->execute($data);
