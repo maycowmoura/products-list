@@ -101,7 +101,7 @@ export default function AddProductModal() {
   function saveProduct() {
     const rawPrice = price.replace(/[^\d]/g, '') / 100;
 
-    if (name.trim().length < 3 || name.trim().length > 30) {
+    if (name.length < 3 || name.length > 30) {
       alert('Por favor, o nome deve conter entre 3 e 30 caracteres.');
       return;
 
@@ -109,7 +109,7 @@ export default function AddProductModal() {
       alert('O preço precisa ser maior que zero.');
       return;
 
-    } else if (category.trim().length < 3 || category.trim().length > 30) {
+    } else if (category.length < 3 || category.length > 30) {
       alert('Por favor, a categoria deve conter entre 3 e 30 caracteres.');
       return;
 
@@ -137,6 +137,10 @@ export default function AddProductModal() {
         hideModal();
         setProducts(products => [...products, resp.data]);
       }
+
+      const categoriesHistory = localStorage.categoriesHistory ? JSON.parse(localStorage.categoriesHistory) : [];
+      categoriesHistory.includes(category.toLowerCase()) || categoriesHistory.push(category.toLowerCase())
+      localStorage.categoriesHistory = JSON.stringify(categoriesHistory);
     }
 
 
@@ -180,6 +184,7 @@ export default function AddProductModal() {
                 maxLength="30"
                 value={name}
                 onChange={e => setName(e.target.value)}
+                onBlur={() => setName(name => name.trim())}
               />
 
               <label className="form-label mt-4"><Price /> Preço</label>
@@ -207,12 +212,19 @@ export default function AddProductModal() {
               <label className="form-label mt-4"><BsTag /> Categorias</label>
               <input
                 type="text"
+                list="categories-history"
                 className="form-control"
                 maxLength="30"
                 placeholder="Digite as categorias do produto"
                 value={category}
                 onChange={e => setCategory(e.target.value)}
+                onBlur={() => setCategory(category => category.trim())}
               />
+              <datalist id="categories-history">
+                {localStorage.categoriesHistory && JSON.parse(localStorage.categoriesHistory).map(category =>
+                  <option key={category}>{category}</option>
+                )}
+              </datalist>
 
               <div className="form-check mt-4">
                 <input
