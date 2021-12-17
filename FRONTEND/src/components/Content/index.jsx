@@ -19,15 +19,28 @@ export default function Content() {
           alert(`Ocorreu um erro ao carregar os productos.`);
           console.log(resp.data.error);
         } else if (resp.data.length) {
-          setProducts(products => [...products, ...resp.data]);
+          setProducts(products => {
+            const allProducts = [...products, ...resp.data];
+
+            // remove duplicate products
+            const reduced = allProducts.reduce((all, product) => {
+              if (!all.ids.includes(product.id)) {
+                all.products.push(product);
+              }
+              all.ids.push(product.id);
+              return all;
+            }, { ids: [], products: [] });
+
+            return reduced.products;
+          });
         }
 
         setIsLoading(false);
         setIsLoadingMore(false);
         setHideLoadMore(false);
 
-        // if there's no products on resp or if it has less products than a page (usually 5 per page), it hides the loadMore btn
-        if (!resp.data.length || resp.data.length < (products.length / (page - 1))) {
+        // if there's no products on resp it hides the loadMore btn
+        if (!resp.data.length) {
           setHideLoadMore(true);
         }
       })
@@ -55,7 +68,7 @@ export default function Content() {
         <div className="row gy-4">
           {products.map(product =>
             <div className="col-12 col-md-6 col-xl-4" key={product.id} >
-              <ProductCard productData={product}/>
+              <ProductCard productData={product} />
             </div>
           )}
         </div>
