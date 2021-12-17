@@ -6,6 +6,8 @@ import api from '../../../api';
 import { formatDistanceToNowStrict, format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import { BiEdit, BiMinusCircle as Minus, BiPlusCircle as Plus } from 'react-icons/bi';
+import { BsFillTagFill } from 'react-icons/bs';
+import { FaRegClock } from 'react-icons/fa';
 
 
 
@@ -43,7 +45,7 @@ export default function ProductCard({ productData }) {
     }, 1000)
   }
 
-  
+
   return (
     <div className="card p-4">
       <h4>{productData.name}</h4>
@@ -54,15 +56,19 @@ export default function ProductCard({ productData }) {
         </div>
         <div className="col-4 user-select-none">
           <Minus className="cursor-pointer me-2" onClick={() => editAmount(amount - 1)} />
-          {amount}
+          <strong>{amount}</strong>
           <Plus className="cursor-pointer ms-2" onClick={() => editAmount(amount + 1)} />
         </div>
       </div>
 
       <div>
-        <span className="badge bg-secondary me-2 capitalize-first">{productData.category.toLowerCase()}</span>
+        <span className="badge bg-secondary me-2 capitalize-first">
+          <BsFillTagFill className="mt-0" /> {productData.category.toLowerCase()}
+        </span>
         {!!productData.perishable &&
-          <span className="badge bg-warning me-2 text-dark">Perecível</span>
+          <span className="badge bg-warning me-2 text-dark">
+            <FaRegClock className="mt-0" /> Perecível
+          </span>
         }
       </div>
       <BiEdit className="edit d-md-none text-primary" onClick={editProduct} />
