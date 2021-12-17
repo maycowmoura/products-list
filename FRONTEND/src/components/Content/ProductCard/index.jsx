@@ -65,7 +65,7 @@ export default function ProductCard({ productData }) {
           <span className="badge bg-warning me-2 text-dark">Perecível</span>
         }
       </div>
-      <BiEdit className="edit" onClick={editProduct} />
+      <BiEdit className="edit d-md-none text-primary" onClick={editProduct} />
 
       <small className="last-update text-muted" title={'Última atualização em ' + format(productData.last_edition * 1000, 'dd/MM/yyy HH:mm:ss')}>
         <i>Atualizado há {formatDistanceToNowStrict(productData.last_edition * 1000, { locale: ptBR })}</i>

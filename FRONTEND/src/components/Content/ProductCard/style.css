@@ -6,8 +6,13 @@
   position: absolute;
   font-size: 18px;
   top: 12px;
-  right: 12px;
+  right: 8px;
   cursor: pointer;
+  animation: come-from-right .3s;
+}
+
+.container .card:hover .edit {
+  display: block !important;
 }
 
 .container .card .last-update {
@@ -45,6 +50,18 @@
 
   100% {
     transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes come-from-right {
+  from {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
     opacity: 1;
   }
 }
