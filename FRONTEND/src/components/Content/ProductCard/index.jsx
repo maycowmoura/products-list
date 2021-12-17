@@ -12,7 +12,7 @@ import { FaRegClock } from 'react-icons/fa';
 
 
 export default function ProductCard({ productData }) {
-  const { setCurrentEditingProduct, setShowAddProductModal } = useMainContext()
+  const { setCurrentEditingProduct, setShowAddProductModal, toast } = useMainContext()
   const [amount, setAmount] = useState(1);
   const amountTimeout = useRef(null);
 
@@ -34,12 +34,12 @@ export default function ProductCard({ productData }) {
       api.put(`/products/${productData.id}/amount/${newAmount}`)
         .then(resp => {
           if (resp.data.error) {
-            alert(`Ocorreu um erro ao atualizar a quantidade de "${productData.name}"`);
+            toast.error(`Ocorreu um erro ao atualizar a quantidade de "${productData.name}"`);
             console.log(resp.data.error);
           }
         })
         .catch(error => {
-          alert('Erro no envio de informações.')
+          toast.error('Erro no envio de informações.')
           console.log(error);
         });
     }, 1000)

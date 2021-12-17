@@ -12,7 +12,7 @@ import { MdOutlineMonetizationOn as Price } from 'react-icons/md';
 
 
 export default function AddProductModal() {
-  const { currentEditingProduct: productData, setCurrentEditingProduct, setProducts, setShowAddProductModal } = useMainContext();
+  const { currentEditingProduct: productData, setCurrentEditingProduct, setProducts, setShowAddProductModal, toast } = useMainContext();
   const [disableButton, setDisableButton] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -80,7 +80,7 @@ export default function AddProductModal() {
     api.delete(`/products/${productData.id}`)
       .then(resp => {
         if (resp.data.error) {
-          alert(`Ocorreu um erro ao deletar "${productData.name}"`);
+          toast.error(`Ocorreu um erro ao deletar "${productData.name}"`);
           console.log(resp.data.error);
 
         } else if (resp.data.ok) {
@@ -91,7 +91,7 @@ export default function AddProductModal() {
         }
       })
       .catch(error => {
-        alert('Erro no envio de informações.')
+        toast.error('Erro no envio de informações.')
         console.log(error);
       })
       .finally(() => setIsLoading(false));
@@ -102,19 +102,19 @@ export default function AddProductModal() {
     const rawPrice = price.replace(/[^\d]/g, '') / 100;
 
     if (name.length < 3 || name.length > 30) {
-      alert('Por favor, o nome deve conter entre 3 e 30 caracteres.');
+      toast.error('Por favor, o nome deve conter entre 3 e 30 caracteres.');
       return;
 
     } else if (rawPrice == 0) { // eslint-disable-line
-      alert('O preço precisa ser maior que zero.');
+      toast.error('O preço precisa ser maior que zero.');
       return;
 
     } else if (category.length < 3 || category.length > 30) {
-      alert('Por favor, a categoria deve conter entre 3 e 30 caracteres.');
+      toast.error('Por favor, a categoria deve conter entre 3 e 30 caracteres.');
       return;
 
     } else if (Number(amount) < 1) {
-      alert('Por favor, insira ao menos uma quantidade.');
+      toast.error('Por favor, insira ao menos uma quantidade.');
       return;
     }
 
@@ -122,9 +122,9 @@ export default function AddProductModal() {
 
     function success(resp) {
       if (resp.data.error) {
-        alert('Ocorreu um erro: ' + resp.data.error);
+        toast.error('Ocorreu um erro: ' + resp.data.error);
       } else if (resp.data.ok) {
-        alert('Produto editado com sucesso!');
+        toast.success('Produto editado com sucesso!');
         hideModal();
         setProducts(products => products.map(product =>
           product.id === productData.id
@@ -133,7 +133,7 @@ export default function AddProductModal() {
         ))
 
       } else {
-        alert('Produto cadastrado com sucesso.');
+        toast.success('Produto cadastrado com sucesso.');
         hideModal();
         setProducts(products => [...products, resp.data]);
       }
@@ -152,7 +152,7 @@ export default function AddProductModal() {
     })
       .then(success)
       .catch(error => {
-        alert('Algo deu errado... Consulte o console.');
+        toast.error('Algo deu errado... Consulte o console.');
         console.log(error);
 
       })

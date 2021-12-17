@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 const MainContext = React.createContext({});
 
@@ -15,7 +15,9 @@ export function MainContextProvider({ children }) {
       showAddProductModal,
       setShowAddProductModal,
       currentEditingProduct,
-      setCurrentEditingProduct
+      setCurrentEditingProduct,
+      ToastContainer,
+      toast
     }}>
       {children}
     </MainContext.Provider>

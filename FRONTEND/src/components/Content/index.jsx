@@ -6,7 +6,7 @@ import ProductCard from './ProductCard';
 import { IoReloadSharp } from 'react-icons/io5';
 
 export default function Content() {
-  const { products, setProducts } = useMainContext();
+  const { products, setProducts, toast } = useMainContext();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hideLoadMore, setHideLoadMore] = useState(true);
@@ -16,7 +16,7 @@ export default function Content() {
     api.get(`/products?page=${page}`)
       .then(resp => {
         if (resp.data.error) {
-          alert(`Ocorreu um erro ao carregar os productos.`);
+          toast.error(`Ocorreu um erro ao carregar os productos.`);
           console.log(resp.data.error);
         } else if (resp.data.length) {
           setProducts(products => {
@@ -45,7 +45,7 @@ export default function Content() {
         }
       })
       .catch(error => {
-        alert('Erro ao receber as informações.')
+        toast.error('Erro ao receber as informações.')
         console.log(error);
       });
   }, [page]) //eslint-disable-line
