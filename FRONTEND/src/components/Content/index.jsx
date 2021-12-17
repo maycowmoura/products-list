@@ -9,7 +9,7 @@ export default function Content() {
   const { products, setProducts } = useMainContext();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [hideLoadMore, setHideLoadMore] = useState(false);
+  const [hideLoadMore, setHideLoadMore] = useState(true);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -24,6 +24,7 @@ export default function Content() {
 
         setIsLoading(false);
         setIsLoadingMore(false);
+        setHideLoadMore(false);
 
         // if there's no products on resp or if it has less products than a page (usually 5 per page), it hides the loadMore btn
         if (!resp.data.length || resp.data.length < (products.length / (page - 1))) {
