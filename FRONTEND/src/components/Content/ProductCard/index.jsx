@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './style.css';
+import { useMainContext } from '../../../contexts/MainContext';
+import { formatPrice } from '../../../utils';
 import api from '../../../api';
 import { formatDistanceToNowStrict, format } from 'date-fns';
 import { BiEdit, BiMinusCircle as Minus, BiPlusCircle as Plus } from 'react-icons/bi';
@@ -7,6 +9,7 @@ import { BiEdit, BiMinusCircle as Minus, BiPlusCircle as Plus } from 'react-icon
 
 
 export default function ProductCard({ productData }) {
+  const { setCurrentEditingProduct, setShowAddProductModal } = useMainContext()
   const [amount, setAmount] = useState(productData.amount ?? 1);
   const amountTimeout = useRef(null);
 
@@ -21,16 +24,9 @@ export default function ProductCard({ productData }) {
     }, 3000)
   }, [amount]) //eslint-disable-line
 
-
-  function formatPrice(rawPrice) {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL"
-    }).format(rawPrice);
-  }
-
   function editProduct() {
-
+    setCurrentEditingProduct(productData);
+    setShowAddProductModal(true);
   }
 
 

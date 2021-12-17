@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './style.css'
 import { useMainContext } from '../../contexts/MainContext';
+import { formatPrice } from '../../utils';
 import api from '../../api';
 import SpinnerLoader from '../SpinnerLoader';
 import { BiTrash, BiSave } from 'react-icons/bi';
@@ -10,17 +11,16 @@ import { MdOutlineMonetizationOn as Price } from 'react-icons/md';
 
 
 
-export default function AddProductModal({ hideModal }) {
-  const { currentEditingProduct: productData } = useMainContext();
+export default function AddProductModal() {
+  const { currentEditingProduct: productData, showAddProductModal, setShowAddProductModal } = useMainContext();
   const [disableButton, setDisableButton] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [name, setName] = useState(productData?.name ?? '');
-  const [price, setPrice] = useState(productData?.price ?? 'R$ 0,00');
-  const [amount, setAmount] = useState(productData?.amount ?? 1);
-  const [category, setCategory] = useState(productData?.category ?? '');
-  const [perishable, setPerishable] = useState(productData?.perishable ?? 0);
-
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('R$ 0,00');
+  const [amount, setAmount] = useState(1);
+  const [category, setCategory] = useState('');
+  const [perishable, setPerishable] = useState(0);
 
   useEffect(() => {
     document.body.classList.add('modal-open');
@@ -28,16 +28,36 @@ export default function AddProductModal({ hideModal }) {
   }, [])
 
   useEffect(() => {
-    const isValid = name.trim() !== '' && price.trim() !== '' && Number(amount) >= 1 && category.trim() !== ''
+    const isValid = name.trim() !== '' && String(price).trim() !== '' && Number(amount) >= 1 && category.trim() !== ''
     setDisableButton(!isValid);
   }, [name, price, amount, category])
+
+  useEffect(() => {
+    if (!productData) return;
+    setName(productData.name);
+    setPrice(formatPrice(productData.price));
+    setAmount(productData.amount ?? 1);
+    setCategory(productData.category);
+    setPerishable(productData.perishable);
+  }, [productData])
+
+
+  // shows nothing if the modal is disabled
+  if (!showAddProductModal) {
+    return <></>;
+  }
+
+
+  function hideModal() {
+    setShowAddProductModal(false);
+  }
 
   function priceValidator(e) {
     let rawPrice = price.replace(/[^\d]/g, '');
 
-    if(/\d/.test(e.key)){
+    if (/\d/.test(e.key)) {
       rawPrice += e.key;
-    } else if(e.keyCode === 8 || e.keyCode === 46){ // backspace or delete
+    } else if (e.keyCode === 8 || e.keyCode === 46) { // backspace or delete
       rawPrice = rawPrice.replace(/\d$/, '');
     } else {
       return;
@@ -54,7 +74,7 @@ export default function AddProductModal({ hideModal }) {
 
   function saveProduct() {
     const rawPrice = price.replace(/[^\d]/g, '') / 100;
-    
+
     if (name.trim().length < 3 || name.trim().length > 30) {
       alert('Por favor, o nome deve conter entre 3 e 30 caracteres.');
       return;
@@ -75,9 +95,9 @@ export default function AddProductModal({ hideModal }) {
     setIsLoading(true);
 
     function success(resp) {
-      if(resp.data.error){
+      if (resp.data.error) {
         alert('Ocorreu um erro: ' + resp.data.error);
-      } else if (resp.data.ok){
+      } else if (resp.data.ok) {
         alert('Produto editado com sucesso!');
         hideModal();
 
@@ -145,6 +165,7 @@ export default function AddProductModal({ hideModal }) {
                 placeholder="Insira o preço do produto"
                 value={price}
                 onKeyDown={e => priceValidator(e)}
+                onChange={e => setPrice(e.target.value)}
               />
 
               <label className="form-label mt-4"><BsGrid3X2Gap /> Quantidade</label>
