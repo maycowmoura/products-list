@@ -12,7 +12,7 @@ import { MdOutlineMonetizationOn as Price } from 'react-icons/md';
 
 
 export default function AddProductModal() {
-  const { currentEditingProduct: productData, showAddProductModal, setShowAddProductModal } = useMainContext();
+  const { currentEditingProduct: productData, setProducts, showAddProductModal, setShowAddProductModal } = useMainContext();
   const [disableButton, setDisableButton] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -53,7 +53,13 @@ export default function AddProductModal() {
   }
 
   function priceValidator(e) {
-    let rawPrice = price.replace(/[^\d]/g, '');
+    let rawPrice;
+
+    if (e.target.selectionStart === 0 && e.target.value.length === e.target.selectionEnd){ // if the value is selected, it sets to zero
+      rawPrice = 0;
+    } else {
+      rawPrice = price.replace(/[^\d]/g, '');
+    }
 
     if (/\d/.test(e.key)) {
       rawPrice += e.key;
@@ -63,12 +69,35 @@ export default function AddProductModal() {
       return;
     }
 
-    const parsedValue = new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL"
-    }).format(rawPrice / 100);
+    setPrice(formatPrice(rawPrice / 100));
+  }
 
-    setPrice(parsedValue);
+
+  function deleteProduct() {
+    if (!window.confirm(`Realmente quer deletar "${productData.name}"?`)) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    api.delete(`/products/${productData.id}`)
+      .then(resp => {
+        if (resp.data.error) {
+          alert(`Ocorreu um erro ao deletar "${productData.name}"`);
+          console.log(resp.data.error);
+
+        } else if (resp.data.ok) {
+          setProducts(products => products.filter(product =>
+            product.id !== productData.id
+          ));
+          hideModal();
+        }
+      })
+      .catch(error => {
+        alert('Erro no envio de informações.')
+        console.log(error);
+      })
+      .finally(() => setIsLoading(false));
   }
 
 
@@ -100,18 +129,16 @@ export default function AddProductModal() {
       } else if (resp.data.ok) {
         alert('Produto editado com sucesso!');
         hideModal();
+        setProducts(products => products.map(product =>
+          product.id === productData.id
+            ? { ...productData, name, price: rawPrice, amount, category, perishable }
+            : product
+        ))
 
       } else {
-        alert('Falta tratar o cadastro.');
+        alert('Produto cadastrado com sucesso.');
         hideModal();
-        /**
-         *
-         *
-         *
-         * TRATAR CADASTRO
-         *
-         *
-         */
+        setProducts(products => [...products, resp.data]);
       }
     }
 
@@ -163,9 +190,12 @@ export default function AddProductModal() {
                 type="tel"
                 className="form-control"
                 placeholder="Insira o preço do produto"
+                maxLength="15"
                 value={price}
                 onKeyDown={e => priceValidator(e)}
-                onChange={e => setPrice(e.target.value)}
+                onChange={() => { }}
+                onFocus={e => e.target.setSelectionRange(15, 15)}
+                onClick={e => e.target.setSelectionRange(15, 15)}
               />
 
               <label className="form-label mt-4"><BsGrid3X2Gap /> Quantidade</label>
@@ -201,16 +231,12 @@ export default function AddProductModal() {
 
             <fieldset className="modal-footer" disabled={isLoading}>
               {productData &&
-                <button type="button" className="btn btn-danger">
-                  <BiTrash /> Excluir produto
+                <button type="button" className="btn btn-danger" onClick={deleteProduct}>
+                  {isLoading ? <SpinnerLoader /> : <><BiTrash /> Excluir produto</>}
                 </button>
               }
               <button type="button" className="btn btn-primary" onClick={saveProduct} disabled={disableButton}>
-                {isLoading ? (
-                  <SpinnerLoader />
-                ) : (
-                  <><BiSave /> Salvar produto</>
-                )}
+                {isLoading ? <SpinnerLoader /> : <><BiSave /> Salvar produto</>}
               </button>
             </fieldset>
 
