@@ -66,8 +66,8 @@ export default function ProductCard({ productData, index }) {
       </div>
       <BiEdit className="edit" onClick={editProduct} />
 
-      <small className="last-update text-muted" title={format(productData.last_edition, 'dd/MM/yyy HH:mm:ss')}>
-        <i>Atualizado há {formatDistanceToNowStrict(productData.last_edition)}</i>
+      <small className="last-update text-muted" title={format(productData.last_edition * 1000, 'dd/MM/yyy HH:mm:ss')}>
+        <i>Atualizado há {formatDistanceToNowStrict(productData.last_edition * 1000)}</i>
       </small>
     </div>
   );
