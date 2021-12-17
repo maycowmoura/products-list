@@ -7,7 +7,7 @@
 
 require_once __DIR__ . '/../../models/db/connection.php';
 
-$sql = $pdo->prepare('DELETE FROM categories WHERE `id` = :id');
+$sql = $pdo->prepare('DELETE FROM products WHERE `id` = :id');
 $sql->execute([
   'id' => $id
 ]);
