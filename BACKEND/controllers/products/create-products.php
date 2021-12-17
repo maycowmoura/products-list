@@ -20,8 +20,8 @@ try {
 
 $now = time();
 $data = [
-  'name' => strtoupper(trim(POST['name'])),
-  'category' => strtolower(trim(POST['category'])),
+  'name' => mb_strtoupper(trim(POST['name'])),
+  'category' => mb_strtolower(trim(POST['category'])),
   'price' => POST['price'],
   'amount' => POST['amount'],
   'perishable' => POST['perishable'],
@@ -43,5 +43,6 @@ if ($sql->rowCount() < 1) {
 
 
 $data['id'] = $pdo->lastInsertId();
+$data['last_edition'] = $now;
 die(_json_encode($data));
 

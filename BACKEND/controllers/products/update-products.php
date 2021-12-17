@@ -35,8 +35,8 @@ $sql = $pdo->prepare(
 
 $sql->execute([
   'id' => $productId,
-  'name' => strtoupper(PUT['name']),
-  'category' => strtolower(PUT['category']),
+  'name' => mb_strtoupper(PUT['name']),
+  'category' => mb_strtolower(PUT['category']),
   'price' => PUT['price'],
   'amount' => PUT['amount'],
   'perishable' => PUT['perishable'],
