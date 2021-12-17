@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './style.css'
+import { useMainContext } from '../../contexts/MainContext';
 import api from '../../api';
 import SpinnerLoader from '../SpinnerLoader';
 import { BiTrash, BiSave } from 'react-icons/bi';
@@ -9,12 +10,13 @@ import { MdOutlineMonetizationOn as Price } from 'react-icons/md';
 
 
 
-export default function AddProductModal({ productData, hideModal }) {
+export default function AddProductModal({ hideModal }) {
+  const { currentEditingProduct: productData } = useMainContext();
   const [disableButton, setDisableButton] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const [name, setName] = useState(productData?.name ?? '');
-  const [price, setPrice] = useState(productData?.price ?? '');
+  const [price, setPrice] = useState(productData?.price ?? 'R$ 0,00');
   const [amount, setAmount] = useState(productData?.amount ?? 1);
   const [category, setCategory] = useState(productData?.category ?? '');
   const [perishable, setPerishable] = useState(productData?.perishable ?? 0);
@@ -30,18 +32,35 @@ export default function AddProductModal({ productData, hideModal }) {
     setDisableButton(!isValid);
   }, [name, price, amount, category])
 
-  function priceValidator(value) {
-    setPrice(value);
+  function priceValidator(e) {
+    let rawPrice = price.replace(/[^\d]/g, '');
+
+    if(/\d/.test(e.key)){
+      rawPrice += e.key;
+    } else if(e.keyCode === 8 || e.keyCode === 46){ // backspace or delete
+      rawPrice = rawPrice.replace(/\d$/, '');
+    } else {
+      return;
+    }
+
+    const parsedValue = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    }).format(rawPrice / 100);
+
+    setPrice(parsedValue);
   }
 
 
   function saveProduct() {
+    const rawPrice = price.replace(/[^\d]/g, '') / 100;
+    
     if (name.trim().length < 3 || name.trim().length > 30) {
       alert('Por favor, o nome deve conter entre 3 e 30 caracteres.');
       return;
 
-    } else if (!/^\d+(,\d\d)?$/.test(price.trim())) {
-      alert('O preço só pode conter números e a vírgula.');
+    } else if (rawPrice == 0) { // eslint-disable-line
+      alert('O preço precisa ser maior que zero.');
       return;
 
     } else if (category.trim().length < 3 || category.trim().length > 30) {
@@ -77,11 +96,10 @@ export default function AddProductModal({ productData, hideModal }) {
     }
 
 
-
     api.request({
       method: productData ? 'put' : 'post',
       url: '/products' + (productData ? `/${productData.id}` : ''),
-      data: { name, price, amount, category, perishable }
+      data: { name, price: rawPrice, amount, category, perishable }
 
     })
       .then(success)
@@ -126,7 +144,7 @@ export default function AddProductModal({ productData, hideModal }) {
                 className="form-control"
                 placeholder="Insira o preço do produto"
                 value={price}
-                onChange={e => priceValidator(e.target.value)}
+                onKeyDown={e => priceValidator(e)}
               />
 
               <label className="form-label mt-4"><BsGrid3X2Gap /> Quantidade</label>
