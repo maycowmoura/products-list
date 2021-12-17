@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import { IconContext } from "react-icons";
 import Header from './components/Header';
+import Content from './components/Content';
 import AddProductModal from './components/AddProductModal';
 
 function App() {
@@ -10,9 +11,7 @@ function App() {
   return (
     <IconContext.Provider value={{ className: 'icon' }}>
       <Header />
-      <div className="container">
-
-      </div>
+      <Content />
 
       {showAddProduct &&
         <AddProductModal hideModal={() => setShowAddProduct(false)} />

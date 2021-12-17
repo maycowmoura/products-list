@@ -1,0 +1,18 @@
+.container .card {
+  position: relative;
+}
+
+.container .card .edit {
+  position: absolute;
+  font-size: 18px;
+  top: 12px;
+  right: 12px;
+  cursor: pointer;
+}
+
+.container .card .last-update {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  color: #b0b5ba !important;
+}
