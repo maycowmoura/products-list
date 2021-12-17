@@ -12,7 +12,7 @@ import { MdOutlineMonetizationOn as Price } from 'react-icons/md';
 
 
 export default function AddProductModal() {
-  const { currentEditingProduct: productData, setProducts, showAddProductModal, setShowAddProductModal } = useMainContext();
+  const { currentEditingProduct: productData, setCurrentEditingProduct, setProducts, showAddProductModal, setShowAddProductModal } = useMainContext();
   const [disableButton, setDisableButton] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,7 +24,10 @@ export default function AddProductModal() {
 
   useEffect(() => {
     document.body.classList.add('modal-open');
-    return () => document.body.classList.remove('modal-open');
+    return () => {
+      document.body.classList.remove('modal-open');
+      setCurrentEditingProduct(null);
+    }
   }, [])
 
   useEffect(() => {
@@ -42,12 +45,6 @@ export default function AddProductModal() {
   }, [productData])
 
 
-  // shows nothing if the modal is disabled
-  if (!showAddProductModal) {
-    return <></>;
-  }
-
-
   function hideModal() {
     setShowAddProductModal(false);
   }
@@ -55,7 +52,7 @@ export default function AddProductModal() {
   function priceValidator(e) {
     let rawPrice;
 
-    if (e.target.selectionStart === 0 && e.target.value.length === e.target.selectionEnd){ // if the value is selected, it sets to zero
+    if (e.target.selectionStart === 0 && e.target.value.length === e.target.selectionEnd) { // if the value is selected, it sets to zero
       rawPrice = 0;
     } else {
       rawPrice = price.replace(/[^\d]/g, '');

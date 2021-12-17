@@ -1,22 +1,20 @@
 import React from 'react';
 import './App.css';
-import { MainContextProvider } from './contexts/MainContext';
 import { IconContext } from "react-icons";
+import { useMainContext } from './contexts/MainContext';
 import Header from './components/Header';
 import Content from './components/Content';
 import AddProductModal from './components/AddProductModal';
 
-function App() {
+export default function App() {
+  const { showAddProductModal } = useMainContext();
 
   return (
-    <MainContextProvider>
-      <IconContext.Provider value={{ className: 'icon' }}>
-        <Header />
-        <Content />
-        <AddProductModal />
-      </IconContext.Provider>
-    </MainContextProvider>
+    <IconContext.Provider value={{ className: 'icon' }}>
+      <Header />
+      <Content />
+      {showAddProductModal && <AddProductModal />}
+    </IconContext.Provider>
   );
 }
 
-export default App;
