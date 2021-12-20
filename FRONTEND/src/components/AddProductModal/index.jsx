@@ -31,6 +31,19 @@ export default function AddProductModal() {
   }, []) // eslint-disable-line
 
   useEffect(() => {
+    window.location.hash = 'modal-open';
+
+    function hashChange() {
+      if (window.location.hash === '') hideModal();
+    }
+    window.addEventListener('hashchange', hashChange);
+    return () => {
+      window.location.hash = '';
+      window.removeEventListener('hashchange', hashChange);
+    }
+  }, []) // eslint-disable-line
+
+  useEffect(() => {
     const isValid = name.trim() !== '' && String(price).trim() !== '' && Number(amount) >= 1 && category.trim() !== ''
     setDisableButton(!isValid);
   }, [name, price, amount, category])
