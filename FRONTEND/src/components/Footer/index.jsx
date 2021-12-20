@@ -24,7 +24,7 @@ export default function Footer() {
         <div className="col col-md-2 fs-2 mx-3 mx-md-0"><BsCart3 /></div>
         <div className="col col-md-4 text-end">Total do carrinho:</div>
         <div
-          className={'col fs-3 overflow-hidden ' + animationClass}
+          className={'col-5 fs-3 overflow-hidden ' + animationClass}
           onAnimationEnd={() => setAnimationClass('')}
         >
           {formatPrice(total)}
