@@ -254,7 +254,7 @@ export default function AddProductModal() {
             <fieldset className="modal-footer" disabled={isLoading}>
               {productData &&
                 <button type="button" className="btn btn-danger" onClick={deleteProduct}>
-                  {isLoading ? <SpinnerLoader /> : <><BiTrash /> Excluir produto</>}
+                  {isLoading ? <SpinnerLoader /> : <><BiTrash /> Excluir</>}
                 </button>
               }
               <button type="button" className="btn btn-primary" onClick={saveProduct} disabled={disableButton}>
