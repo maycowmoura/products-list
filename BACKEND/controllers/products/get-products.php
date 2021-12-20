@@ -10,6 +10,7 @@ $sql->bindValue(':firstItem', (($page - 1) * 5), PDO::PARAM_INT);
 $sql->execute();
 
 $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+$result = count($result) === 0 ? [] : $result;
 
 die(
   _json_encode($result)

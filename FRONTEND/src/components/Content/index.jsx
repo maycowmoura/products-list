@@ -3,6 +3,7 @@ import api from '../../api';
 import { useMainContext } from '../../contexts/MainContext';
 import SpinnerLoader from '../SpinnerLoader';
 import ProductCard from './ProductCard';
+import { BsCartX } from 'react-icons/bs';
 import { IoReloadSharp } from 'react-icons/io5';
 
 export default function Content() {
@@ -63,6 +64,11 @@ export default function Content() {
         <div className="p-5 my-5 text-center">
           <SpinnerLoader />
           <p className="mt-3">carregando produtos...</p>
+        </div>
+      ) : !products.length ? (
+        <div className="text-center text-muted pt-5">
+          <BsCartX className="mt-5 mb-3" size="50px" />
+          <p>Nenhum produto cadastrado ainda.</p>
         </div>
       ) : (
         <div className="row gy-4">
