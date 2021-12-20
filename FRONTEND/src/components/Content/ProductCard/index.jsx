@@ -52,7 +52,7 @@ export default function ProductCard({ productData }) {
 
   return (
     <div className="card p-4 shadow">
-      <h4>{productData.name}</h4>
+      <h4>{productData.name.toUpperCase()}</h4>
 
       <div className="row my-1">
         <div className="col-7">
@@ -67,7 +67,7 @@ export default function ProductCard({ productData }) {
 
       <div className="row align-items-center">
         <div className="col-7">
-          <span className="badge bg-secondary me-2 capitalize-first">
+          <span className="badge bg-secondary me-2">
             <BsFillTagFill className="mt-0" /> {productData.category.toLowerCase()}
           </span>
           {!!productData.perishable &&
