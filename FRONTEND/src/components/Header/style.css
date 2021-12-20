@@ -6,6 +6,19 @@ header {
   align-items: center;
 }
 
+body.header-fixed {
+  padding-top: 70px;
+}
+
+body.header-fixed header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  animation: fade-from-top .4s;
+}
+
 header .container {
   display: flex;
   justify-content: space-between;
@@ -14,4 +27,16 @@ header .container {
 
 header .container img {
   max-width: 100px;
+}
+
+@keyframes fade-from-top {
+  from {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
 }

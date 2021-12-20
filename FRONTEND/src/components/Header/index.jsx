@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import './style.css';
 import { useMainContext } from '../../contexts/MainContext';
 import logo from './logo.png';
-import { BsCartPlus} from 'react-icons/bs';
+import { BsCartPlus } from 'react-icons/bs';
 
 export default function Header() {
   const { setShowAddProductModal } = useMainContext();
+  const header = useRef();
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      window.scrollY > (header.current.offsetHeight + 30)
+        ? document.body.classList.add('header-fixed')
+        : document.body.classList.remove('header-fixed')
+    })
+  }, [])
 
   return (
-    <header>
+    <header ref={header}>
       <div className="container">
         <div>
           <img src={logo} alt="Logo Store" />
