@@ -5,6 +5,7 @@ import { useMainContext } from './contexts/MainContext';
 import Header from './components/Header';
 import Content from './components/Content';
 import AddProductModal from './components/AddProductModal';
+import Footer from './components/Footer';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
       <Header />
       <Content />
       {showAddProductModal && <AddProductModal />}
+      <Footer />
       
       <ToastContainer
         position="top-right"

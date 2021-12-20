@@ -74,7 +74,7 @@ export default function Content() {
         </div>
       )}
 
-      <div className="load-more mx-2 my-5 text-center text-success">
+      <div className="load-more mx-2 my-5 pb-5 text-center text-success">
         {isLoadingMore ? (
           <SpinnerLoader />
 
