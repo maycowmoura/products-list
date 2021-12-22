@@ -22,7 +22,7 @@ export default function Footer() {
     <footer>
       <div className="row p-3 align-items-center bg-primary text-white">
         <div className="col col-md-2 fs-2 mx-3 mx-md-0"><BsCart3 /></div>
-        <div className="col col-md-4 text-end">Total do carrinho:</div>
+        <div className="col col-md-4 text-end lh-1">Total do carrinho:</div>
         <div
           className={'col-5 fs-3 overflow-hidden ' + animationClass}
           onAnimationEnd={() => setAnimationClass('')}
