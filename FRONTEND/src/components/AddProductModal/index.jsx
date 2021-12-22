@@ -62,6 +62,11 @@ export default function AddProductModal() {
     setShowAddProductModal(false);
   }
 
+  function moveCursorToEnd(e){
+    const len = e.target.value.length;
+    e.target.setSelectionRange(len, len);
+  }
+
   function priceValidator(e) {
     let rawPrice;
 
@@ -73,7 +78,7 @@ export default function AddProductModal() {
 
     if (/\d/.test(e.key)) {
       rawPrice += e.key;
-    } else if (e.keyCode === 8 || e.keyCode === 46) { // backspace or delete
+    } else if (e.keyCode === 8 || e.keyCode === 46 || e.keyCode === 229) { // backspace or delete
       rawPrice = rawPrice.replace(/\d$/, '');
     } else {
       return;
@@ -207,10 +212,11 @@ export default function AddProductModal() {
                 placeholder="Insira o preço do produto"
                 maxLength="15"
                 value={price}
-                onKeyDown={e => priceValidator(e)}
+                onKeyDown={priceValidator}
                 onChange={() => { }}
-                onFocus={e => e.target.setSelectionRange(15, 15)}
-                onClick={e => e.target.setSelectionRange(15, 15)}
+                onFocus={moveCursorToEnd}
+                onClick={moveCursorToEnd}
+                onKeyUp={moveCursorToEnd}
               />
 
               <label className="form-label mt-4"><BsGrid3X2Gap /> Quantidade</label>
@@ -228,7 +234,7 @@ export default function AddProductModal() {
                 list="categories-history"
                 className="form-control text-lowercase"
                 maxLength="30"
-                placeholder="Digite as categorias do produto"
+                placeholder="Digite a categoria do produto"
                 value={category}
                 onChange={e => setCategory(e.target.value)}
                 onBlur={() => setCategory(category => category.trim())}
